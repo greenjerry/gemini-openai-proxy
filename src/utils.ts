@@ -87,7 +87,10 @@ function hasImageMessage(messages: OpenAI.Chat.ChatCompletionMessageParam[]): bo
 }
 
 export function genModel(req: OpenAI.Chat.ChatCompletionCreateParams): [GeminiModel, GenerateContentRequest] {
-  const model = hasImageMessage(req.messages) ? GeminiModel.GEMINI_PRO_VISION : GeminiModel.GEMINI_PRO
+  // const model = hasImageMessage(req.messages) ? GeminiModel.GEMINI_PRO_VISION : GeminiModel.GEMINI_PRO
+  const model = req.model === "gemini-pro" ? GeminiModel.GEMINI_PRO :
+    req.model === "gemini-pro-vision" ? GeminiModel.GEMINI_PRO_VISION :
+    req.model === "gemini-1.5-pro-latest" ? GeminiModel.GEMINI_1_5_PRO_LATEST :GeminiModel.GEMINI_PRO
 
   const generateContentRequest: GenerateContentRequest = {
     contents: openAiMessageToGeminiMessage(req.messages),
@@ -111,6 +114,7 @@ export function genModel(req: OpenAI.Chat.ChatCompletionCreateParams): [GeminiMo
 export enum GeminiModel {
   GEMINI_PRO = "gemini-pro",
   GEMINI_PRO_VISION = "gemini-pro-vision",
+  GEMINI_1_5_PRO_LATEST = "gemini-1.5-pro-latest",
 }
 
 export function getRuntimeKey() {

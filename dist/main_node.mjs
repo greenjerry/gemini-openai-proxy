@@ -552,20 +552,8 @@ function openAiMessageToGeminiMessage(messages) {
   });
   return result;
 }
-function hasImageMessage(messages) {
-  return messages.some((msg) => {
-    const content = msg.content;
-    if (content == null) {
-      return false;
-    }
-    if (typeof content === "string") {
-      return false;
-    }
-    return content.some((it) => it.type === "image_url");
-  });
-}
 function genModel(req) {
-  const model = hasImageMessage(req.messages) ? "gemini-pro-vision" /* GEMINI_PRO_VISION */ : "gemini-pro" /* GEMINI_PRO */;
+  const model = req.model === "gemini-pro" ? "gemini-pro" /* GEMINI_PRO */ : req.model === "gemini-pro-vision" ? "gemini-pro-vision" /* GEMINI_PRO_VISION */ : req.model === "gemini-1.5-pro-latest" ? "gemini-1.5-pro-latest" /* GEMINI_1_5_PRO_LATEST */ : "gemini-pro" /* GEMINI_PRO */;
   const generateContentRequest = {
     contents: openAiMessageToGeminiMessage(req.messages),
     generationConfig: {
