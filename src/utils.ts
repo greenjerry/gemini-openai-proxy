@@ -17,7 +17,7 @@ export function getToken(headers: Headers): ApiParam | null {
     if (!rawApikey.includes("#")) {
       return {
         apikey: rawApikey,
-        useBeta: false,
+        useBeta: true,
       }
     }
 
